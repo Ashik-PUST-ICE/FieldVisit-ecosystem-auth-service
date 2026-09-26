@@ -12,9 +12,4 @@ class UserGroup extends Model
     protected $casts = [
         'status' => StatusEnum::class,
     ];
-
-    public function clients()
-    {
-        return $this->hasMany(Client::class, 'user_group_id');
-    }
 }

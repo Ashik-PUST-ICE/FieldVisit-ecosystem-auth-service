@@ -27,6 +27,7 @@ return new class extends Migration
             $table->string('google_id')->nullable();
             $table->string('facebook_id')->nullable();
             $table->timestamp('last_login_at')->nullable();
+            $table->unsignedBigInteger('company_id')->nullable();
             $table->unsignedTinyInteger('status')->default(1);
             $table->rememberToken();
             $table->timestamps();
@@ -46,7 +47,8 @@ return new class extends Migration
 
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->primary();
-            $table->foreignId('user_id')->nullable()->index();
+            $table->unsignedBigInteger('user_id')->nullable()->index();
+            $table->foreign('user_id')->references('id')->on('users')->nullOnDelete();
             $table->string('ip_address', 45)->nullable();
             $table->text('user_agent')->nullable();
             $table->longText('payload');

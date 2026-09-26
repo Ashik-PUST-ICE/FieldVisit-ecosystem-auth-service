@@ -5,12 +5,10 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use App\Enums\Applications\StatusEnum;
-use App\Models\Directory\UserNetworkIndex;
 use App\Observers\UserObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
@@ -122,19 +120,9 @@ class User extends Authenticatable implements OAuthenticatable
         return $this->hasMany(UserIdentity::class);
     }
 
-    public function client(): HasOne
-    {
-        return $this->hasOne(Client::class);
-    }
-
     public function addressBooks(): HasMany
     {
         return $this->hasMany(AddressBook::class);
-    }
-
-    public function networks(): HasMany
-    {
-        return $this->hasMany(UserNetworkIndex::class);
     }
 
     public function employee()
