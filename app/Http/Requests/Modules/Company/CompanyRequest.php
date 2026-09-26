@@ -2,9 +2,10 @@
 
 namespace App\Http\Requests\Modules\Company;
 
+use App\Models\Company;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateCompanyRequest extends FormRequest
+class CompanyRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -13,9 +14,11 @@ class UpdateCompanyRequest extends FormRequest
 
     public function rules(): array
     {
+        $isUpdate = $this->route('company') instanceof Company;
+
         return [
-            'name' => ['sometimes', 'string', 'max:255'],
-            'slug' => ['sometimes', 'string', 'max:255', 'unique:companies,slug,' . $this->route('company')->id],
+            'name' => [$isUpdate ? 'sometimes' : 'required', 'string', 'max:255'],
+            'slug' => [$isUpdate ? 'sometimes' : 'required', 'string', 'max:255', $isUpdate ? 'unique:companies,slug,' . $this->route('company')->id : 'unique:companies,slug'],
             'email' => ['nullable', 'email', 'max:255'],
             'phone' => ['nullable', 'string', 'max:20'],
             'address' => ['nullable', 'string'],

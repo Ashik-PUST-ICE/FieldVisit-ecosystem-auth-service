@@ -4,8 +4,7 @@ namespace App\Http\Controllers\Api\V1\Modules\Company;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Modules\Company\CompanyResource;
-use App\Http\Requests\Modules\Company\StoreCompanyRequest;
-use App\Http\Requests\Modules\Company\UpdateCompanyRequest;
+use App\Http\Requests\Modules\Company\CompanyRequest;
 use App\Models\Company;
 use App\Services\Applications\Api\ApiResponse;
 use App\Services\Modules\Company\CompanyService;
@@ -24,7 +23,7 @@ class CompanyController extends Controller
         });
     }
 
-    public function store(StoreCompanyRequest $request)
+    public function store(CompanyRequest $request)
     {
         return $this->handleRequest(function () use ($request) {
             $company = $this->companyService->store($request->validated());
@@ -42,7 +41,7 @@ class CompanyController extends Controller
         });
     }
 
-    public function update(UpdateCompanyRequest $request, Company $company)
+    public function update(CompanyRequest $request, Company $company)
     {
         return $this->handleRequest(function () use ($request, $company) {
             $company = $this->companyService->update($company, $request->validated());

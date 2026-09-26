@@ -4,8 +4,7 @@ namespace App\Http\Controllers\Api\V1\Modules\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Modules\User\UserResource;
-use App\Http\Requests\Modules\User\StoreUserRequest;
-use App\Http\Requests\Modules\User\UpdateUserRequest;
+use App\Http\Requests\Modules\User\UserRequest;
 use App\Models\User;
 use App\Services\Applications\Api\ApiResponse;
 use App\Services\Modules\User\UserService;
@@ -24,7 +23,7 @@ class UserController extends Controller
         });
     }
 
-    public function store(StoreUserRequest $request)
+    public function store(UserRequest $request)
     {
         return $this->handleRequest(function () use ($request) {
             $user = $this->userService->store($request->validated());
@@ -42,7 +41,7 @@ class UserController extends Controller
         });
     }
 
-    public function update(UpdateUserRequest $request, User $user)
+    public function update(UserRequest $request, User $user)
     {
         return $this->handleRequest(function () use ($request, $user) {
             $user = $this->userService->update($user, $request->validated());
