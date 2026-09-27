@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Carbon\CarbonInterval;
+use Illuminate\Cache\RateLimiting\Limit;
 use Laravel\Passport\Passport;
 use App\Models\Passport\Client;
 use Illuminate\Support\Facades\Gate;
@@ -14,6 +15,7 @@ use App\Services\Applications\Logging\RemoteLogClient;
 use App\Listeners\Applications\SendLogToLoggingService;
 use App\Services\Applications\Gateway\MachineTokenManager;
 use App\Repositories\Eloquents\CustomAccessTokenRepository;
+use Illuminate\Support\Facades\RateLimiter;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -37,6 +39,14 @@ class AppServiceProvider extends ServiceProvider
         });
         Gate::before(function ($user, $ability) {
             return $user->hasRole('super-admin') ? true : null;
+        });
+
+        RateLimiter::for('api', function (\Illuminate\Http\Request $request) {
+            return Limit::perMinute(60)->by($request->ip());
+        });
+
+        RateLimiter::for('auth', function (\Illuminate\Http\Request $request) {
+            return Limit::perMinute(10)->by($request->ip());
         });
     }
 }

@@ -42,6 +42,7 @@ class ApiResponse
         $status = self::getStatusCode($e);
 
         $response = [
+            'success' => false,
             'message' => $customMessage ?? $e->getMessage(),
         ];
 

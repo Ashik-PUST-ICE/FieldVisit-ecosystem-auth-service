@@ -10,8 +10,8 @@ if (! function_exists('log_activity')) {
      * $context should be serializable (array).
      */
     function log_activity(
-        ?string $targetId = null,
         string $message,
+        ?string $targetId = null,
         ?string $actorId = null,
         ?string $category = null,
         ?string $action = null,

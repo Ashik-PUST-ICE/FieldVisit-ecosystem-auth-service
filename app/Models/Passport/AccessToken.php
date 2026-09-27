@@ -552,9 +552,17 @@ class AccessToken extends PassportAccessToken
             }
         }
 
+        $companyId = null;
+        try {
+            $companyId = $this->userModel->company_id ?? null;
+        } catch (\Throwable $e) {
+            Log::debug('[AccessToken] toString company_id error', ['err' => $e->getMessage()]);
+        }
+
         // inject roles & permissions (replace any existing)
         $builder = $builder->withClaim('roles', $roles)
-            ->withClaim('permissions', $permissions);
+            ->withClaim('permissions', $permissions)
+            ->withClaim('company_id', $companyId);
 
         $newToken = $builder->getToken($config->signer(), $config->signingKey());
         Log::debug('[AccessToken] toString rebuilt token signed', ['roles_count' => count($roles), 'perms_count' => count($permissions)]);

@@ -6,8 +6,9 @@ use App\Http\Controllers\Api\V1\Modules\User\UserController;
 use App\Http\Controllers\Api\V1\Services\ServiceController;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['prefix' => 'auth'], function () {
+Route::group(['prefix' => 'auth', 'middleware' => 'throttle:auth'], function () {
     Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/register', [AuthController::class, 'register']);
     Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
     Route::post('/change-password', [AuthController::class, 'changePassword']);
 });
@@ -26,7 +27,7 @@ Route::get('/auth/public-key', function () {
     ]);
 });
 
-Route::group(['middleware' => ['auth:api', 'verify.jwt']], function () {
+Route::group(['middleware' => ['auth:api', 'verify.jwt', 'throttle:api']], function () {
     Route::get('/me', [AuthController::class, 'me'])->name('auth.me');
     Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
     Route::put('/profile', [AuthController::class, 'updateProfile'])->name('auth.profile.update');

@@ -7,6 +7,7 @@ use App\Http\Requests\Auth\ChangePasswordRequest;
 use App\Http\Requests\Auth\ForgotPasswordRequest;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\ProfileUpdateRequest;
+use App\Http\Requests\Auth\RegisterRequest;
 use App\Services\Applications\Api\ApiResponse;
 use App\Services\Auth\AuthService;
 use Illuminate\Http\Request;
@@ -21,6 +22,15 @@ class AuthController extends Controller
             $data = $this->authService->login($request->validated());
 
             return ApiResponse::success($data, 'Login successful');
+        });
+    }
+
+    public function register(RegisterRequest $request)
+    {
+        return $this->handleRequest(function () use ($request) {
+            $data = $this->authService->register($request->validated());
+
+            return ApiResponse::success($data, 'Registration successful', 201);
         });
     }
 

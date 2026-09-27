@@ -93,6 +93,28 @@ class AuthService
         return true;
     }
 
+    public function register(array $data): mixed
+    {
+        $user = User::create([
+            'first_name' => $data['first_name'],
+            'last_name' => $data['last_name'] ?? null,
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
+            'status' => true,
+        ]);
+
+        if (! empty($data['roles'])) {
+            $user->syncRoles($data['roles']);
+        }
+
+        $token = $user->createToken($user->email)->accessToken;
+
+        return $this->authResponseAction->execute($user, [
+            'token_type' => 'Bearer',
+            'access_token' => $token,
+        ]);
+    }
+
     public function updateProfile(array $data, ?UploadedFile $image = null): mixed
     {
         $user = auth()->user();
