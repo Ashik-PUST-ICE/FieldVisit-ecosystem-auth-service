@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\V1\Auth\AuthController;
+use App\Http\Controllers\Api\V1\Auth\SecuritySettingsController;
 use App\Http\Controllers\Api\V1\Modules\Company\CompanyController;
 use App\Http\Controllers\Api\V1\Modules\User\UserController;
 use App\Http\Controllers\Api\V1\Services\ServiceController;
@@ -31,6 +32,12 @@ Route::group(['middleware' => ['auth:api', 'verify.jwt', 'throttle:api']], funct
     Route::get('/me', [AuthController::class, 'me'])->name('auth.me');
     Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
     Route::put('/profile', [AuthController::class, 'updateProfile'])->name('auth.profile.update');
+    Route::get('/security-settings', [SecuritySettingsController::class, 'show']);
+    Route::post('/security-settings/change-pin', [SecuritySettingsController::class, 'changePin']);
+    Route::put('/security-settings/mnp', [SecuritySettingsController::class, 'updateMnp']);
+    Route::put('/security-settings/otp-channel', [SecuritySettingsController::class, 'updateOtpChannel']);
+    Route::put('/security-settings/biometric', [SecuritySettingsController::class, 'updateBiometric']);
+    Route::put('/security-settings/randomize-pin-keyboard', [SecuritySettingsController::class, 'updateRandomKeyboard']);
 
     Route::prefix('settings')->group(function () {
         Route::get('roles/list', [\App\Http\Controllers\Api\V1\Modules\Settings\RoleController::class, 'list']);

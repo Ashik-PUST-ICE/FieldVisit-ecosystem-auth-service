@@ -4,6 +4,7 @@ namespace App\Http\Resources\Auth;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
 class AuthResource extends JsonResource
 {
@@ -17,7 +18,7 @@ class AuthResource extends JsonResource
         return [
             'auth_id' => $this->id,
             'email' => $this->email,
-            'image' => isset($this->image) ? asset($this->image) : null,
+            'image' => $this->image ? Storage::disk('public')->url($this->image) : null,
             'full_name' => $this->full_name,
             'unique_id' => $this->unique_id,
             'status' => $this->status,

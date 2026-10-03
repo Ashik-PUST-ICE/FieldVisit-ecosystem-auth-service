@@ -45,7 +45,7 @@ class AuthService
 
     public function logout(array $params = []): mixed
     {
-        $user = auth()->user();
+        $user = User::findOrFail(authId());
 
         if ($user) {
             $user->tokens()->each(function ($token) {
@@ -117,7 +117,7 @@ class AuthService
 
     public function updateProfile(array $data, ?UploadedFile $image = null): mixed
     {
-        $user = auth()->user();
+        $user = User::findOrFail(authId());
 
         if (isset($data['first_name'])) {
             $user->first_name = $data['first_name'];
