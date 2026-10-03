@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\V1\Auth\AuthController;
 use App\Http\Controllers\Api\V1\Auth\SecuritySettingsController;
+use App\Http\Controllers\Api\V1\Auth\StorageSettingsController;
 use App\Http\Controllers\Api\V1\Modules\Company\CompanyController;
 use App\Http\Controllers\Api\V1\Modules\User\UserController;
 use App\Http\Controllers\Api\V1\Services\ServiceController;
@@ -38,6 +39,9 @@ Route::group(['middleware' => ['auth:api', 'verify.jwt', 'throttle:api']], funct
     Route::put('/security-settings/otp-channel', [SecuritySettingsController::class, 'updateOtpChannel']);
     Route::put('/security-settings/biometric', [SecuritySettingsController::class, 'updateBiometric']);
     Route::put('/security-settings/randomize-pin-keyboard', [SecuritySettingsController::class, 'updateRandomKeyboard']);
+    Route::get('/storage-settings', [StorageSettingsController::class, 'show']);
+    Route::put('/storage-settings', [StorageSettingsController::class, 'update']);
+    Route::post('/storage-settings/test', [StorageSettingsController::class, 'test']);
 
     Route::prefix('settings')->group(function () {
         Route::get('roles/list', [\App\Http\Controllers\Api\V1\Modules\Settings\RoleController::class, 'list']);

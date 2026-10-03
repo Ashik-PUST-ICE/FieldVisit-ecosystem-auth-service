@@ -4,7 +4,7 @@ namespace App\Http\Resources\Microservices\Users;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Storage;
+use App\Services\StorageManager;
 
 class UserResource extends JsonResource
 {
@@ -27,7 +27,7 @@ class UserResource extends JsonResource
             'whatsapp_verified_at' => $this->whatsapp_verified_at,
             'email' => $this->email,
             'email_verified_at' => $this->email_verified_at,
-            'image' => $this->image ? Storage::disk('public')->url($this->image) : null,
+            'image' => $this->image ? app(StorageManager::class)->disk()->url($this->image) : null,
             'status' => $this->status,
             'is_employee' => $this->is_employee,
         ];

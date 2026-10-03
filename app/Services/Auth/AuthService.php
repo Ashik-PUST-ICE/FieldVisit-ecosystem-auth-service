@@ -5,6 +5,7 @@ namespace App\Services\Auth;
 use App\Actions\Modules\Authentications\AuthResponseAction;
 use App\Actions\Modules\Authentications\GenerateTokenAction;
 use App\Models\User;
+use App\Services\StorageManager;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -15,6 +16,7 @@ class AuthService
     public function __construct(
         protected GenerateTokenAction $generateTokenAction,
         protected AuthResponseAction $authResponseAction,
+        protected StorageManager $storageManager,
     ) {}
 
     public function login(array $credentials): mixed
@@ -143,6 +145,6 @@ class AuthService
 
     private function uploadImage(UploadedFile $image): string
     {
-        return $image->store('users', 'public');
+        return $this->storageManager->disk()->putFile('users', $image);
     }
 }
