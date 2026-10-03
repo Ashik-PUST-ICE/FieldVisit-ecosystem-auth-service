@@ -16,6 +16,7 @@ class AuthResource extends JsonResource
     {
         return [
             'auth_id' => $this->id,
+            'email' => $this->email,
             'image' => isset($this->image) ? asset($this->image) : null,
             'full_name' => $this->full_name,
             'unique_id' => $this->unique_id,
