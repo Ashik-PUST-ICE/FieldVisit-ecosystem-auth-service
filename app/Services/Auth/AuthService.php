@@ -133,6 +133,9 @@ class AuthService
         if (isset($data['email'])) {
             $user->email = $data['email'];
         }
+        if (isset($data['locale']) && in_array($data['locale'], ['en', 'bn'], true)) {
+            $user->locale = $data['locale'];
+        }
 
         if ($image) {
             $user->image = $this->uploadImage($image);

@@ -20,6 +20,7 @@ class ProfileUpdateRequest extends FormRequest
             'mobile' => ['nullable', 'string', 'max:20'],
             'email' => ['sometimes', 'email', 'max:255', Rule::unique('users')->ignore(authId())],
             'image' => ['nullable', 'image', 'max:2048'],
+            'locale' => ['sometimes', 'string', 'in:en,bn'],
         ];
     }
 }

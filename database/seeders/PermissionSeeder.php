@@ -18,22 +18,30 @@ class PermissionSeeder extends Seeder
         $permissions = Config::get('permissions', []);
 
         // Create permissions
+        $expected = [];
         foreach ($permissions as $section => $groups) {
             foreach ($groups as $group => $modules) {
                 foreach ($modules as $module => $actions) {
                     foreach ($actions as $action => $label) {
                         $permissionName = "$section.$group.$module.$action";
+                        $expected[] = $permissionName;
                         Permission::updateOrCreate([
                             'name' => $permissionName,
                             'guard_name' => 'api',
                         ], [
-                            'title' => ucwords($module.' '.$label),
+                            'title' => ucwords(str_replace('_', ' ', $module.' '.$label)),
                             'group' => $group.'-'.$module,
                         ]);
                     }
                 }
             }
         }
+
+        // Prune permissions that are no longer in the catalogue (e.g. leftovers
+        // from another project) so the role editor only shows real actions.
+        Permission::where('guard_name', 'api')
+            ->whereNotIn('name', $expected)
+            ->delete();
 
         $superRoles = Role::whereIn('name', ['special-super-admin', 'super-admin'])->get();
         if ($superRoles->isNotEmpty()) {
